@@ -6,7 +6,6 @@ export async function GET() {
         return Response.json([...rows]);
     } catch (error) {
         return Response.json(
-            { error: error.message },
-            { status: 500 });
+            { error: error.message }, { status: 500 });
     }
 }
