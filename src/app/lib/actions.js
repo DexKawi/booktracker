@@ -42,3 +42,52 @@ export async function addBook(data) {
     }
 
 }
+
+export async function addChapter(data) {
+    try {
+        const [lastId] = await connection.query(
+            "SELECT id FROM user_summary ORDER BY id DESC LIMIT 1"
+        )
+        const newId = lastId.length > 0 ? lastId[0].id + 1 : 1
+
+        const { book_id, chapter_num, chapter_summary } = data
+
+        await connection.query(
+            `INSERT INTO user_summary(id, book_id, chapter_num, chapter_summary)
+            VALUES (?,?,?,?)`,
+            [
+                newId,
+                book_id,
+                chapter_num,
+                chapter_summary
+            ]
+        )
+        revalidatePath(`/books/${data.book_id}`)
+        return { success: true, chapterId: newId }
+
+    } catch (error) {
+        return { success: false, error: error.message }
+    }
+}
+
+export async function updateChapter(data) {
+    try {
+        await connection.query(
+            "UPDATE `user_summary` SET `chapter_num` = ?, `chapter_summary` = ? WHERE `id` = ?",
+            [data.chapter_num, data.chapter_summary, data.id]
+        )
+        return { success: true, message: "Chapter updated successfully!" }
+    } catch (error) {
+        return { success: false, error: error.message }
+    }
+}
+
+export async function deleteChapter(chapNum) {
+    try {
+        await connection.query("DELETE FROM `user_summary` WHERE `user_summary`.`id` = ?", [chapNum])
+
+        return { success: true, message: `Chapter has been deleted successfully!` }
+    } catch (error) {
+        return { success: false, error: error.message }
+    }
+}

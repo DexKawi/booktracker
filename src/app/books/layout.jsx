@@ -7,9 +7,9 @@ export const metadata = {
 
 export default function Layout({ children }) {
     return (
-        <section>
+        <div className="max-w-7xl mx-auto mt-5 mb-5 min-h-screen flex flex-col flex-1">
             {children}
-        </section>
+        </div>
     )
 
 }

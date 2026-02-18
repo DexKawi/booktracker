@@ -5,11 +5,10 @@ export function SearchBar({
     searchValue,
     setSearchValue,
     handleSearchSubmit,
-    formState,
     setFormState
 }) {
     return (
-        <div className="flex w-full justify-center gap-2">
+        <div className="flex relative w-full justify-center gap-2 z-999">
             <Form onChange={handleSearchSubmit} className="flex border border-[#333333] bg-[#1f1f1f] justify-between p-2 w-full max-w-sm md:max-w-md lg:max-w-lg rounded-full">
                 <input
                     type="text"

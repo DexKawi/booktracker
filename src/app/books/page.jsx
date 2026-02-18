@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { BookCard } from "../components/book-card"
 import { SearchBar } from "../components/search-bar"
 import { useDebounce } from "../hooks/custom-hooks/debounce"
+import { FormAdd } from "../components/form"
 
 export default function Books() {
     const [bookData, setBookData] = useState([])
@@ -44,7 +45,6 @@ export default function Books() {
 
     function handleSearchSubmit(e) {
         e.preventDefault()
-        console.log(`You're searching for ${debouncedSearch}`)
     }
 
 
@@ -65,7 +65,7 @@ export default function Books() {
 
     return (
         <div>
-            <div className="flex fixed z-3 max-w-7xl mx-auto w-full justify-center bottom-0 inset-x-0 m-5">
+            <div className="flex fixed z-50 max-w-7xl mx-auto w-full justify-center bottom-0 inset-x-0 m-5">
                 <SearchBar
                     searchValue={searchValue}
                     setSearchValue={setSearchValue}
@@ -75,12 +75,14 @@ export default function Books() {
                 />
             </div>
 
+            {formState && <FormAdd className="text-xl" />}
+
             {dataToDisplay.length === 0 && debouncedSearch ? (
                 <div className="flex min-h-[50vh] items-center justify-center text-gray-500">
                     Book not found
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {dataToDisplay.map((data, index) => {
                         return (
                             <div key={index}>

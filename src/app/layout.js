@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${plusJakartaSans.variable} ${fuzzyBubbles.variable} antialiased max-w-7xl mx-auto px-6`}
+        className={`${plusJakartaSans.variable} ${fuzzyBubbles.variable} ntialiased max-w-3xl mx-auto px-6 min-h-screen flex flex-col`}
       >
         {children}
       </body>
