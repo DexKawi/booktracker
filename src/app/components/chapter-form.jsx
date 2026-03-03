@@ -18,6 +18,7 @@ export function ChapterForm({ bookId, editData, onClose }) {
         if (editData) {
             const result = await updateChapter({
                 id: editData.id,
+                book_id: numericBookId,
                 chapter_num: parseInt(formData.get("chapter_num")),
                 chapter_summary: formData.get("chapter_summary")
             })
@@ -59,6 +60,7 @@ export function ChapterForm({ bookId, editData, onClose }) {
                         id="chapter_num"
                         name="chapter_num"
                         type="number"
+                        min="0"
                         placeholder="e.g. 1"
                         defaultValue={editData?.chapter_num}
                     />

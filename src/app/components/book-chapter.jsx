@@ -1,5 +1,5 @@
 import { useState, useEffect, Suspense } from "react"
-import { ChevronRight, ChevronLeft, Trash, Pencil } from "lucide-react"
+import { ChevronRight, ChevronLeft, Plus, Trash, Pencil } from "lucide-react"
 import { ChapterForm } from "./chapter-form"
 import { deleteChapter } from "../lib/actions"
 
@@ -32,7 +32,7 @@ export function BookChapter({ bookId }) {
 
     const filtered = summaryData.filter((res) => {
         const bookNumber = parseInt(bookId.replace('book_', ''))
-        return res.book_id == bookNumber
+        return Number(res.book_id) === bookNumber
     })
 
     const sortedChapters = [...filtered].sort((a, b) => a.chapter_num - b.chapter_num)
@@ -51,7 +51,7 @@ export function BookChapter({ bookId }) {
     }
 
     function DataLoadWait() {
-        return <div> 😪 Loading...</div>
+        return <div>Loading...</div>
     }
 
     async function handleChapterDelete(chapterNum) {
@@ -73,30 +73,41 @@ export function BookChapter({ bookId }) {
             {loading ? <DataLoadWait /> :
                 <div>
                     <Suspense fallback={<DataLoadWait />}>
-                        <button onClick={() => setFormStatus(true)}>Add new chapter</button>
+                        <div className="flex justify-between">
+                            <Plus onClick={() => setFormStatus(true)} />
+                            <div className="flex gap-2">
+                                <Trash onClick={() =>
+                                    currentChapter && handleChapterDelete(currentChapter.id)}
+                                    className={!currentChapter ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+                                />
+                                <Pencil onClick={() =>
+                                    currentChapter && setEditingChapter(currentChapter)}
+                                    className={!currentChapter ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+                                />
+                            </div>
+                        </div>
+                        {(formStatus || editingChapter) && (
+                            <ChapterForm
+                                bookId={bookId}
+                                editData={editingChapter}
+                                onClose={() => { setFormStatus(false); setEditingChapter(null); }}
+                            />
+                        )}
                         {currentChapter ? (
                             <div>
-
                                 <div>
-                                    <div className="flex">
-                                        <ChevronLeft
-                                            onClick={goToPrev}
-                                            className={currentIndex === 0 ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
-                                        />
-                                        <p>Chapter {currentChapter.chapter_num}</p>
-                                        <ChevronRight
-                                            onClick={goToNext}
-                                            className={currentIndex === sortedChapters.length - 1 ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
-                                        />
-                                        <Trash onClick={() => handleChapterDelete(currentChapter.id)} />
-                                        <Pencil onClick={() => setEditingChapter(currentChapter)} />
-                                        {(formStatus || editingChapter) && (
-                                            <ChapterForm
-                                                bookId={bookId}
-                                                editData={editingChapter}
-                                                onClose={() => { setFormStatus(false); setEditingChapter(null); }}
+                                    <div className="flex justify-between">
+                                        <div className="flex">
+                                            <ChevronLeft
+                                                onClick={goToPrev}
+                                                className={currentIndex === 0 ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
                                             />
-                                        )}
+                                            <p>Chapter {currentChapter.chapter_num}</p>
+                                            <ChevronRight
+                                                onClick={goToNext}
+                                                className={currentIndex === sortedChapters.length - 1 ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+                                            />
+                                        </div>
                                     </div>
                                     <p>{currentChapter.chapter_summary}</p>
                                 </div>
