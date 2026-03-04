@@ -75,7 +75,7 @@ export default function Books() {
                 />
             </div>
 
-            {formState && <FormAdd className="text-xl" />}
+            {formState && <FormAdd className="text-xl" onClose={() => setFormState(false)} />}
 
             {dataToDisplay.length === 0 && debouncedSearch ? (
                 <div className="flex min-h-[50vh] items-center justify-center text-gray-500">

@@ -76,6 +76,7 @@ export default function BooksDetail() {
                         <FormAdd
                             editBook={editBook}
                             bookData={bookData}
+                            onClose={() => setEditBook(false)}
                         />
                     }
                 </div>
